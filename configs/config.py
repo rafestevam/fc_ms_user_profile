@@ -8,6 +8,7 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__));
 SECRET_KEY = 'fc-collab'
+CORS_HEADERS = 'Content-Type'
 JWT_SECRET_KEY = 'fc-collab'
 JWT_BLACKLIST_ENABLED = True
 JWT_BLACKLIST_TOKEN_CHECKS = ['access', 'refresh']

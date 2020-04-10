@@ -13,7 +13,7 @@ from flask_jwt_extended.utils import create_access_token, create_refresh_token
 from bcrypt import checkpw
 
 class SignIn(Resource):
-
+    
     def post(self):
         req_data = request.get_json() or None
         

@@ -8,9 +8,11 @@ from api import api_bp
 from db import mongo  
 from utils.createadminuser import CreateAdminUser
 from security.security import configure_jwt
+from flask_cors.extension import CORS
 
 def create_app(config_filename):
     app = Flask(__name__)
+    cors = CORS(app, resources={r"*": {"origins": "*"}})
     app.config.from_object(config_filename)
     
     app.register_blueprint(api_bp, url_prefix='/users')

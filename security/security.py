@@ -23,6 +23,7 @@ def configure_jwt(app):
                 role = 'collaborator'
             
             return {
+                'username': user.username,
                 'name': user.name,
                 'cellPhone': user.cellPhone,
                 'active': user.active,
