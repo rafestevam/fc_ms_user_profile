@@ -5,7 +5,8 @@ Created on 8 de abr de 2020
 '''
 from flask.json import jsonify
 from utils.messages import MSG_ALREADY_EXISTS, MSG_INVALID_DATA, MSG_SUCCESS,\
-    MSG_NOT_FOUND, MSG_EXCEPTION, MSG_INVALID_CREDENTIALS, MSG_LOGGED_OUT
+    MSG_NOT_FOUND, MSG_EXCEPTION, MSG_INVALID_CREDENTIALS, MSG_LOGGED_OUT,\
+    MSG_NOT_ACTIVE
 
 def resp_not_unique_err(resource: str, description: str):
     '''
@@ -52,6 +53,21 @@ def resp_does_not_exist_err(resource: str, description: str):
         'message': MSG_NOT_FOUND.format(description)
     })
     resp.status_code = 404
+    
+    return resp
+
+def resp_not_active_err(resource: str, description: str):
+    '''
+    Response 401 - Unauthorized (Not Active)
+    '''
+    if not isinstance(resource, str):
+        raise ValueError('O recurso precisa ser uma string')
+    
+    resp = jsonify({
+        'resource': resource,
+        'message': MSG_NOT_ACTIVE.format(description)
+    })
+    resp.status_code = 401
     
     return resp
 
