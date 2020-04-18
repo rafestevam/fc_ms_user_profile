@@ -5,7 +5,9 @@ Created on 8 de abr de 2020
 '''
 from configs.config import FC_ADMIN_USER, FC_ADMIN_PASS
 import bcrypt
-from models.models import User, Roles
+from models.user import User
+from models.roles import Roles
+from models.profile import Profile
 
 class CreateAdminUser():
     
@@ -16,9 +18,12 @@ class CreateAdminUser():
             User(
                 username = FC_ADMIN_USER, 
                 password = hashed_pass, 
-                name = 'Administrator', 
                 active=True,
                 roles=Roles(admin=True, collaborator=False, superuser=False)
+            ).save()
+            Profile(
+                username = FC_ADMIN_USER,
+                name = 'Administrator'
             ).save()
             
         except Exception as e:

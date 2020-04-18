@@ -4,13 +4,13 @@ Created on 9 de abr de 2020
 @author: RAEO
 '''
 from flask_restful import Resource
-from models.models import User
 from flask.globals import request
 from utils.responses import resp_data_invalid_err, resp_does_not_exist_err,\
     resp_exception_err, resp_invalid_credentials_err, resp_not_active_err
 from mongoengine import DoesNotExist
 from flask_jwt_extended.utils import create_access_token, create_refresh_token
 from bcrypt import checkpw
+from models.user import User
 
 class SignIn(Resource):
     

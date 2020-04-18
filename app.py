@@ -17,7 +17,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}})
 app.config.from_object(config)
 api = Api(app)
 
-routing_api(url_prefix='/users', api=api)
+routing_api(url_prefix='/user', api=api)
 
 configure_jwt(app)
 mongo.init_app(app)

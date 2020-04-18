@@ -130,3 +130,4 @@ def resp_user_loggedout(resource: str):
     resp.status_code = 200
     
     return resp
+    
