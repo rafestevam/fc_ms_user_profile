@@ -5,7 +5,6 @@ Created on 9 de abr de 2020
 '''
 from flask_jwt_extended.jwt_manager import JWTManager
 from security.blacklist import BLACKLIST
-from models.user import User
 from flask.json import jsonify
 from utils.messages import MSG_NO_TOKEN_AT_ALL, MSG_INVALID_TOKEN,\
     MSG_EXPIRED_TOKEN
@@ -13,23 +12,24 @@ from utils.messages import MSG_NO_TOKEN_AT_ALL, MSG_INVALID_TOKEN,\
 def configure_jwt(app):
     jwt = JWTManager(app)
     
-    @jwt.user_claims_loader
-    def add_claims_to_jwt(identity):
-        user = User.objects.get(username=identity)
-        if user:
-            role = ''
-            if user.roles.admin:
-                role = 'administrator'
-            if user.roles.superuser:
-                role = 'superuser'
-            if user.roles.collaborator:
-                role = 'collaborator'
-            
-            return {
-                'username': user.username,
-                'active': user.active,
-                'role': role
-            }
+#     @jwt.user_claims_loader
+#     def add_claims_to_jwt(identity):
+#         user = User.objects.get(username=identity)
+#         if user:
+#             role = ''
+#             if user.roles.admin:
+#                 role = 'administrator'
+#             if user.roles.superuser:
+#                 role = 'superuser'
+#             if user.roles.collaborator:
+#                 role = 'collaborator'
+#             
+#             return {
+#                 'username': user.username,
+#                 'createdIn': user.createdIn,
+#                 'active': user.active,
+#                 'role': role
+#             }
             
     @jwt.token_in_blacklist_loader
     def check_if_token_in_blacklist(token):

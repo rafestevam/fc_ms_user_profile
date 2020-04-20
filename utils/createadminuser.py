@@ -19,11 +19,8 @@ class CreateAdminUser():
                 username = FC_ADMIN_USER, 
                 password = hashed_pass, 
                 active=True,
-                roles=Roles(admin=True, collaborator=False, superuser=False)
-            ).save()
-            Profile(
-                username = FC_ADMIN_USER,
-                name = 'Administrator'
+                roles=Roles(admin=True, collaborator=False, superuser=False),
+                profile=Profile(name='Administrator', cellPhone='(99)99999-9999', avatar='assets/avatars/profiles/avatar-3.jpg')
             ).save()
             
         except Exception as e:

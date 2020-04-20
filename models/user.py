@@ -13,6 +13,7 @@ from mongoengine.fields import (
 from datetime import datetime
 from mongoengine import EmbeddedDocumentField
 from models.roles import Roles
+from models.profile import Profile
 
 class User(mongo.Document):
     
@@ -23,4 +24,5 @@ class User(mongo.Document):
     createdIn = DateTimeField(default=datetime.now)
     active = BooleanField(default=False)
     roles = EmbeddedDocumentField(Roles, default=Roles)
+    profile = EmbeddedDocumentField(Profile, default=Profile)
     

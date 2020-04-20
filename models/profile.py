@@ -3,14 +3,11 @@ Created on 17 de abr de 2020
 
 @author: RAEO
 '''
-from db import mongo
-from mongoengine.fields import EmailField, StringField
+from mongoengine.fields import StringField
+from mongoengine import EmbeddedDocument
 
-class Profile(mongo.Document):
-    
-    meta = {'collection': 'profiles'}
-    
-    username = EmailField(required=True)
+class Profile(EmbeddedDocument):
+
     name = StringField(default='')
     cellPhone = StringField(default='')
     avatar = StringField(default='')

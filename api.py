@@ -9,7 +9,7 @@ from resources.signin import SignIn
 from resources.refreshtoken import RefreshToken
 from resources.signout import SignOut
 from flask_restful import Api
-from resources.profiles import Profiles
+from resources.users import Users
 
 def routing_api(url_prefix='', api=Api()):
 #API Routing
@@ -18,4 +18,4 @@ def routing_api(url_prefix='', api=Api()):
     api.add_resource(SignIn, url_prefix + '/signin')
     api.add_resource(RefreshToken, url_prefix + '/refresh')
     api.add_resource(SignOut, url_prefix + '/logout')
-    api.add_resource(Profiles, url_prefix + '/profile')
+    api.add_resource(Users, url_prefix + '/')
