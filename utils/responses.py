@@ -6,7 +6,8 @@ Created on 8 de abr de 2020
 from flask.json import jsonify
 from utils.messages import MSG_ALREADY_EXISTS, MSG_INVALID_DATA, MSG_SUCCESS,\
     MSG_NOT_FOUND, MSG_EXCEPTION, MSG_INVALID_CREDENTIALS, MSG_LOGGED_OUT,\
-    MSG_NOT_ACTIVE
+    MSG_NOT_ACTIVE, MSG_USER_ALREADY_EXISTS
+from models.user import User
 
 def resp_not_unique_err(resource: str, description: str):
     '''
@@ -35,6 +36,23 @@ def resp_data_invalid_err(resource: str, errors: dict):
         'resource': resource,
         'message': MSG_INVALID_DATA,
         'errors': errors,
+    })
+
+    resp.status_code = 422
+
+    return resp
+
+def resp_user_already_exists_err(resource: str, user: User):
+    '''
+    Responses 422 Unprocessable Entity
+    '''
+
+    if not isinstance(resource, str):
+        raise ValueError('O recurso precisa ser uma string.')
+
+    resp = jsonify({
+        'resource': resource,
+        'message': MSG_USER_ALREADY_EXISTS.format(user.username)
     })
 
     resp.status_code = 422

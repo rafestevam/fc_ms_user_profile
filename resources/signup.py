@@ -29,9 +29,9 @@ class SignUp(Resource):
                 password = bcrypt.hashpw(req_data['password'].encode('utf-8'), bcrypt.gensalt()),
             ).save()
             Profile(
-                username = req_data['username'],
                 name = req_data['name'],
-                cellPhone = req_data['cellPhone']
+                cellPhone = req_data['cellPhone'],
+                avatar = req_data['avatar']
             )
             return resp_user_created('Users', req_data['username'])
         except NotUniqueError:

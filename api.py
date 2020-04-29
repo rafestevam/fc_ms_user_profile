@@ -10,6 +10,7 @@ from resources.refreshtoken import RefreshToken
 from resources.signout import SignOut
 from flask_restful import Api
 from resources.users import Users
+from resources.queryuser import QueryUser
 
 def routing_api(url_prefix='', api=Api()):
 #API Routing
@@ -19,3 +20,4 @@ def routing_api(url_prefix='', api=Api()):
     api.add_resource(RefreshToken, url_prefix + '/refresh')
     api.add_resource(SignOut, url_prefix + '/logout')
     api.add_resource(Users, url_prefix + '/')
+    api.add_resource(QueryUser, url_prefix + '/query')
