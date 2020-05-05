@@ -1,16 +1,19 @@
+from flask_jwt_extended import jwt_required
 from flask_restful import Resource
-from flask_jwt import jwt_required
 from flask.globals import request
-from utils.responses import resp_data_invalid_err, resp_user_already_exists_err, resp_user_created
+from utils.responses import resp_data_invalid_err, resp_user_already_exists_err, resp_exception_err
 from models.user import User
 from mongoengine.errors import DoesNotExist
+
 
 class QueryUser(Resource):
 
     @jwt_required
     def post(self):
+        # return "success", 200
         req_data = request.get_json() or None
 
+        print(req_data)
         if req_data is None:
             return resp_data_invalid_err('Users', [])
 
@@ -19,8 +22,11 @@ class QueryUser(Resource):
 
             if user:
                 return resp_user_already_exists_err('User', user)
-        
+
         except DoesNotExist:
-            return { 
-                'message': 'username available'
-            }, 200
+            return {
+                       'message': 'Usuário disponível'
+                   }, 200
+
+        except Exception as e:
+            return resp_exception_err('Users', e.__str__())
