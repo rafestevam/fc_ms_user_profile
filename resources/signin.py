@@ -11,6 +11,7 @@ from mongoengine import DoesNotExist
 from flask_jwt_extended.utils import create_access_token, create_refresh_token
 from bcrypt import checkpw
 from models.user import User
+import datetime
 
 class SignIn(Resource):
     
@@ -27,7 +28,8 @@ class SignIn(Resource):
             if not user.active:
                 return resp_not_active_err('Users', user.username)
             if user and checkpw(req_data['password'].encode('utf-8'), user.password.encode('utf-8')):
-                access_token = create_access_token(identity=user.username, fresh=True)
+                expires = datetime.timedelta(seconds=3600)
+                access_token = create_access_token(identity=user.username, fresh=True, expires_delta=expires)
                 refresh_token = create_refresh_token(user.username)
                 return {
                     'access_token': access_token,

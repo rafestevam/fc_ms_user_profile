@@ -13,16 +13,16 @@ from flask.json import jsonify
 
 
 class Users(Resource):
-    
+
     @jwt_required
     def get(self):
         
-        userName = get_jwt_identity()
+        user_name = get_jwt_identity()
         try:
-            return self.__to_json(User.objects.get(username=userName)), 200
+            return self.__to_json(User.objects.get(username=user_name)), 200
         
         except DoesNotExist:
-            return resp_does_not_exist_err('Profiles', userName)
+            return resp_does_not_exist_err('Profiles', user_name)
         
         except Exception as e:
             return resp_exception_err('Profiles', e.__str__())
