@@ -10,10 +10,11 @@ from flask_jwt_extended import jwt_required
 import bcrypt
 from mongoengine.errors import NotUniqueError
 from utils.responses import resp_not_unique_err, resp_data_invalid_err,\
-    resp_user_created
+    resp_user_created, resp_exception_err
 from models.user import User
 from models.profile import Profile
 from models.roles import Roles
+import uuid
 
 class SignUp(Resource):
 
@@ -26,7 +27,9 @@ class SignUp(Resource):
             return resp_data_invalid_err('Users', [])
         
         try:
+            unique_guid = str(uuid.uuid4())
             User(
+                guid = unique_guid,
                 username = req_data['username'],
                 password = bcrypt.hashpw(req_data['password'].encode('utf-8'), bcrypt.gensalt()),
                 profile = Profile(
@@ -35,14 +38,18 @@ class SignUp(Resource):
                     avatar = req_data['profile']['avatar']
                 ),
                 roles = Roles(
-                    admin = True if req_data['roles']['role_admin'] == 'true' else False, 
-                    superuser = True if req_data['roles']['role_superuser'] == 'true' else False,
-                    collaborator = True if req_data['roles']['role_collaborator'] == 'true' else False
+                    admin = True if req_data['role'] == 'administrator' else False, 
+                    superuser = True if req_data['role'] == 'superuser' else False,
+                    collaborator = True if req_data['role'] == 'collaborator' else False
                 )
             ).save()
             
             return resp_user_created('Users', req_data['username'])
+
         except NotUniqueError:
             return resp_not_unique_err('Users', 'usuário')
+        
+        except Exception as ex: # pylint: disable=broad-except
+            return resp_exception_err('Users', ex.__str__())
         
         

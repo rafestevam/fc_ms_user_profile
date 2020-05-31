@@ -5,8 +5,7 @@ from utils.responses import resp_data_invalid_err, resp_user_already_exists_err,
 from models.user import User
 from mongoengine.errors import DoesNotExist
 
-
-class QueryUser(Resource):
+class Available(Resource):
 
     @jwt_required
     def post(self):

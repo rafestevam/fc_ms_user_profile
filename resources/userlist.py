@@ -17,19 +17,6 @@ class Users(Resource):
     @jwt_required
     def get(self):
         
-        user_name = get_jwt_identity()
-        try:
-            return self.__to_json(User.objects.get(username=user_name)), 200
-        
-        except DoesNotExist:
-            return resp_does_not_exist_err('Profiles', user_name)
-        
-        except Exception as e:
-            return resp_exception_err('Profiles', e.__str__())
-    
-    @jwt_required
-    def post(self):
-        
         try:
             return [self.__to_json(user) for user in User.objects], 200
         
@@ -54,6 +41,7 @@ class Users(Resource):
             avatar = user.profile.avatar
         )
         resp = jsonify(
+            guid = user.guid,
             username = user.username,
             role = self.__get_role(user.roles),
             createdIn = user.createdIn,
