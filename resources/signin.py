@@ -8,7 +8,12 @@ from flask.globals import request
 from utils.responses import resp_data_invalid_err, resp_does_not_exist_err,\
     resp_exception_err, resp_invalid_credentials_err, resp_not_active_err
 from mongoengine import DoesNotExist
-from flask_jwt_extended.utils import create_access_token, create_refresh_token
+from flask_jwt_extended.utils import ( 
+    create_access_token, 
+    create_refresh_token,
+    get_jwt_identity
+)
+from flask_jwt_extended import jwt_refresh_token_required
 from bcrypt import checkpw
 from models.user import User
 import datetime
@@ -42,3 +47,10 @@ class SignIn(Resource):
         
         except Exception as e:
             return resp_exception_err('Users', e.__str__())
+
+# class TokenRefresh(Resource):
+#     @jwt_refresh_token_required
+#     def post (self):
+#         current_user = get_jwt_identity()
+#         new_token = create_access_token(identity=current_user, fresh=False)
+#         return {'access_token': new_token}, 200

@@ -6,8 +6,15 @@ from mongoengine.errors import DoesNotExist, NotUniqueError
 from models.user import User
 from models.profile import Profile
 from models.roles import Roles
-from utils.responses import resp_does_not_exist_err, resp_exception_err, \
-    resp_data_invalid_err, resp_user_updated, resp_user_created, resp_not_unique_err
+from utils.responses import (
+    resp_does_not_exist_err, 
+    resp_exception_err,
+    resp_data_invalid_err, 
+    resp_user_updated, 
+    resp_user_created, 
+    resp_not_unique_err,
+    resp_user_deleted
+)
 import uuid
 import bcrypt
 
@@ -50,6 +57,21 @@ class UserResource(Resource):
 
         except DoesNotExist:
             return resp_does_not_exist_err('Users', req_data['guid'])
+
+        except Exception as ex: # pylint: disable=broad-except
+            return resp_exception_err('Users', ex.__str__())
+
+    @jwt_required
+    def delete(self, guid):
+
+        try:
+            user = User.objects.get(guid=guid)
+            User.objects.get(guid=guid).delete
+
+            return resp_user_deleted('Users', user.username)
+        
+        except DoesNotExist:
+            return resp_does_not_exist_err('Users', guid)
 
         except Exception as ex: # pylint: disable=broad-except
             return resp_exception_err('Users', ex.__str__())

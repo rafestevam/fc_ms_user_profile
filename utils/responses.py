@@ -4,9 +4,19 @@ Created on 8 de abr de 2020
 @author: RAEO
 '''
 from flask.json import jsonify
-from utils.messages import MSG_ALREADY_EXISTS, MSG_INVALID_DATA, MSG_SUCCESS,\
-    MSG_NOT_FOUND, MSG_EXCEPTION, MSG_INVALID_CREDENTIALS, MSG_LOGGED_OUT,\
-    MSG_NOT_ACTIVE, MSG_USER_ALREADY_EXISTS, MSG_SUCCESS_UPD
+from utils.messages import (
+    MSG_ALREADY_EXISTS, 
+    MSG_INVALID_DATA, 
+    MSG_SUCCESS,
+    MSG_NOT_FOUND, 
+    MSG_EXCEPTION, 
+    MSG_INVALID_CREDENTIALS, 
+    MSG_LOGGED_OUT,
+    MSG_NOT_ACTIVE, 
+    MSG_USER_ALREADY_EXISTS, 
+    MSG_SUCCESS_UPD,
+    MSG_SUCCESS_DEL
+)
 from models.user import User
 
 def resp_not_unique_err(resource: str, description: str):
@@ -144,6 +154,21 @@ def resp_user_updated(resource: str, description: str):
     resp = jsonify({
         'resource': resource,
         'message': MSG_SUCCESS_UPD.format(description)
+    })
+    resp.status_code = 200
+    
+    return resp
+
+def resp_user_deleted(resource: str, description: str):
+    '''
+    Response 200 - OK
+    '''
+    if not isinstance(resource, str):
+        raise ValueError('O recurso precisa ser uma string')
+    
+    resp = jsonify({
+        'resource': resource,
+        'message': MSG_SUCCESS_DEL.format(description)
     })
     resp.status_code = 200
     
