@@ -6,7 +6,8 @@ Created on 7 de abr de 2020
 '''
 import os
 
-basedir = os.path.abspath(os.path.dirname(__file__));
+BASEDIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_DIR = '{}/profiles/'.format(BASEDIR)
 SECRET_KEY = 'fc-collab'
 CORS_HEADERS = 'Content-Type'
 JWT_SECRET_KEY = 'fc-collab'

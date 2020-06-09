@@ -9,8 +9,13 @@ from flask.globals import request
 from flask_jwt_extended import jwt_required
 import bcrypt
 from mongoengine.errors import NotUniqueError
-from utils.responses import resp_not_unique_err, resp_data_invalid_err,\
-    resp_user_created, resp_exception_err
+from utils.responses import ( 
+    resp_not_unique_err, 
+    resp_data_invalid_err,
+    resp_user_created, 
+    resp_exception_err
+)
+from utils.createdir import CreateDir
 from models.user import User
 from models.profile import Profile
 from models.roles import Roles
