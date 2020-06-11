@@ -1,4 +1,5 @@
 import os
+import stat
 
 class CreateDir():
 
@@ -7,4 +8,5 @@ class CreateDir():
         newpath = local_dir
         if not os.path.exists(newpath):
             os.makedirs(newpath)
+            os.chmod(local_dir, stat.S_IWRITE)
         return newpath

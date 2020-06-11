@@ -15,8 +15,10 @@ from utils.responses import (
     resp_not_unique_err,
     resp_user_deleted
 )
+from configs import config
 import uuid
 import bcrypt
+import os, stat
 
 class UserResource(Resource):
 
@@ -37,26 +39,30 @@ class UserResource(Resource):
     @jwt_required
     def put(self, guid):
 
-        req_data = request.get_json() or None
-        
-        if req_data is None:
+        if request.form is None:
             return resp_data_invalid_err('Users', [])
 
         try:
+            img_file = request.files['imageFile']
+            if img_file:
+                file_ext = img_file.filename.rsplit('.', 1)[1].lower()
+                filename = '{}.{}'.format(guid, file_ext)
+                img_file.save(os.path.join(config.UPLOAD_DIR, filename))
+
             user = User.objects.get(guid=guid)
             User.objects.get(guid=guid).update(
-                set__profile__name = req_data['profile']['name'],
-                set__profile__avatar = req_data['profile']['avatar'],
-                set__profile__cellPhone = req_data['profile']['cellPhone'],
-                set__roles__admin = True if req_data['role'] == 'administrator' else False,
-                set__roles__superuser = True if req_data['role'] == 'superuser' else False,
-                set__roles__collaborator = True if req_data['role'] == 'collaborator' else False
+                set__profile__name = request.form['profile.name'],
+                set__profile__avatar = filename,
+                set__profile__cellPhone = request.form['profile.cellPhone'],
+                set__roles__admin = True if request.form['role'] == 'administrator' else False,
+                set__roles__superuser = True if request.form['role'] == 'superuser' else False,
+                set__roles__collaborator = True if request.form['role'] == 'collaborator' else False
             )
 
             return resp_user_updated('Users', user.username)
 
         except DoesNotExist:
-            return resp_does_not_exist_err('Users', req_data['guid'])
+            return resp_does_not_exist_err('Users', guid)
 
         except Exception as ex: # pylint: disable=broad-except
             return resp_exception_err('Users', ex.__str__())
@@ -67,6 +73,8 @@ class UserResource(Resource):
         try:
             user = User.objects.get(guid=guid)
             User.objects.get(guid=guid).delete
+
+            os.remove(os.path.join(config.UPLOAD_DIR, user.profile.avatar))
 
             return resp_user_deleted('Users', user.username)
         

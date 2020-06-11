@@ -13,11 +13,13 @@ from resources.userlist import Users
 from resources.userresource import UserResource
 from resources.queryuser import Available
 from resources.activateuser import ActivateUser
+from resources.image import Image
 
 def routing_api(url_prefix='', api=Api()):
 #API Routing
     api.add_resource(Hello, url_prefix + '/hello')
     api.add_resource(SignUp, url_prefix + '/new')
+    # api.add_resource(UserResource, url_prefix + '/new')
     api.add_resource(SignIn, url_prefix + '/auth')
     api.add_resource(RefreshToken, url_prefix + '/auth/refresh')
     #api.add_resource(SignOut, url_prefix + '/logout')
@@ -25,3 +27,4 @@ def routing_api(url_prefix='', api=Api()):
     api.add_resource(UserResource, url_prefix + '/<string:guid>')
     api.add_resource(ActivateUser, url_prefix + '/<string:guid>/active')
     api.add_resource(Available, url_prefix + '/available')
+    api.add_resource(Image, url_prefix + '/profile-photo/<string:guid>')
