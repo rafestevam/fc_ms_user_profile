@@ -35,7 +35,7 @@ class SignIn(Resource):
             if user and checkpw(req_data['password'].encode('utf-8'), user.password.encode('utf-8')):
                 expires = datetime.timedelta(seconds=3600)
                 access_token = create_access_token(identity=user.guid, fresh=True, expires_delta=expires)
-                refresh_token = create_refresh_token(user.username)
+                refresh_token = create_refresh_token(user.guid)
                 return {
                     'access_token': access_token,
                     'refresh_token': refresh_token

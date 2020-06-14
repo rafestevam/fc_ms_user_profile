@@ -72,9 +72,10 @@ class UserResource(Resource):
 
         try:
             user = User.objects.get(guid=guid)
-            User.objects.get(guid=guid).delete
+            User.objects.get(guid=guid).delete()
 
-            os.remove(os.path.join(config.UPLOAD_DIR, user.profile.avatar))
+            if (os.path.exists(os.path.join(config.UPLOAD_DIR, user.profile.avatar))):
+                os.remove(os.path.join(config.UPLOAD_DIR, user.profile.avatar))
 
             return resp_user_deleted('Users', user.username)
         
